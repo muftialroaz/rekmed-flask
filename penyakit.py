@@ -1,7 +1,7 @@
 import mysql.connector
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from modules import preprocess, vektorisasi
+from modules import preprocess, vektorisasi, cosine_sim
 
 
 db = mysql.connector.connect(
@@ -23,9 +23,10 @@ diagnosis = pd.DataFrame(diagnosis)
 diagnosis.columns = [str(x) for x in diagnosis.columns]
 diagnosis.rename(columns={'0': 'mr', '2': 'nama'}, inplace=True)
 diagnosis[['mr','nama']]
+diagnosis = diagnosis.fillna('Kosong')
 
-input = ['siti']
-diagnosis = preprocess(diagnosis)
-diagnosis_vec, input_vec = vektorisasi(diagnosis, input)
-print(diagnosis_vec)
-print(input_vec)
+diagnosis_pre = preprocess(diagnosis['nama'])
+def penyakit_input(input):
+  diagnosis_vec, input_vec = vektorisasi(diagnosis_pre, input)
+  cosi = cosine_sim(diagnosis_vec, input_vec)
+  return cosi
