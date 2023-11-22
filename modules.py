@@ -9,16 +9,17 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
-def preprocess(input):
+# Input preprocessing Function
+def preprocess_input(input):
     ## Data cleaning
     # 1 Lowering case: Mengubah teks menjadi huruf kecil untuk konsistensi dalam analisis
-    input_nama = input.str.lower()
+    input = input.lower()
 
     # 2 Tokenisasi, memisahkan teks menjadi kata-kata atau frasa.
-    input_nama_tokens = input_nama.apply(lambda x: word_tokenize(x))
+    input_tokens = word_tokenize(input)
 
     # 3 Menghapus Stopwords
-    input_nama_tokens = input_nama_tokens.apply(lambda x: [word for word in x if word not in stop_words])
+    input_tokens = [word for word in input_tokens if word not in stop_words]
 
     # Membuat fungsi stemming untuk mengembalikan kata menjadi kata dasar
     def stem_text(text):
@@ -28,19 +29,51 @@ def preprocess(input):
         return stemmed_text
 
     # 4. Menjalankan fungsi stemming dari cell kode sebelumnnya
-    input_nama_tokens = input_nama_tokens.apply(stem_text)
+    input_tokens = stem_text(input_tokens)
 
     # 5. Menghapus kata yang terlalu pendek dan menyisakan minimal 3 huruf.
     min_length = 2  # Menentukan panjang minimum kata yang diizinkan
 
-    input_nama_tokens = input_nama_tokens.apply(lambda x: [word for word in x if len(word) >= min_length])
+    input_tokens =  [word for word in input_tokens if len(word) >= min_length]
 
     # 6 Menggabungkan token menjadi teks bersih
-    preprocess_text = input_nama_tokens.apply(lambda x: ' '.join(x))
+    input_preprocess = [' '.join(input_tokens)]
+
+    return input_preprocess
+
+# Table text preprocessing
+def preprocess(data_text):
+    ## Data cleaning
+    # 1 Lowering case: Mengubah teks menjadi huruf kecil untuk konsistensi dalam analisis
+    data_text_nama = data_text.str.lower()
+
+    # 2 Tokenisasi, memisahkan teks menjadi kata-kata atau frasa.
+    data_text_nama_tokens = data_text_nama.apply(lambda x: word_tokenize(x))
+
+    # 3 Menghapus Stopwords
+    data_text_nama_tokens = data_text_nama_tokens.apply(lambda x: [word for word in x if word not in stop_words])
+
+    # Membuat fungsi stemming untuk mengembalikan kata menjadi kata dasar
+    def stem_text(text):
+        factory = StemmerFactory()
+        stemmer = factory.create_stemmer()
+        stemmed_text = [stemmer.stem(word) for word in text]
+        return stemmed_text
+
+    # 4. Menjalankan fungsi stemming dari cell kode sebelumnnya
+    data_text_nama_tokens = data_text_nama_tokens.apply(stem_text)
+
+    # 5. Menghapus kata yang terlalu pendek dan menyisakan minimal 3 huruf.
+    min_length = 2  # Menentukan panjang minimum kata yang diizinkan
+
+    data_text_nama_tokens = data_text_nama_tokens.apply(lambda x: [word for word in x if len(word) >= min_length])
+
+    # 6 Menggabungkan token menjadi teks bersih
+    preprocess_text = data_text_nama_tokens.apply(lambda x: ' '.join(x))
 
     return preprocess_text
 
-
+# Table text vectorization
 def vektorisasi(data_text, input):
     # Inisialisasi CountVectorizer
     vectorizer = CountVectorizer()
@@ -55,6 +88,8 @@ def vektorisasi(data_text, input):
 
     return df_text_vec, df_input_vec
 
+
+# Table text cosine similarity
 cosine = []
 def cosine_sim(data, input):
     # Reshape the vectors to be 2D arrays
@@ -66,5 +101,6 @@ def cosine_sim(data, input):
 
     cosine_df = pd.DataFrame(cosine)
     cosine_df = cosine_df.rename(columns={0:'cosine'})
+    # cosine_df = cosine_df.sort_values(by='cosine', ascending=False)
 
     return cosine_df

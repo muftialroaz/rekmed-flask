@@ -9,11 +9,12 @@
 from pasien import pasien_input
 from penyakit import penyakit_input
 from dokter import dokter_input
-from modules import preprocess
+from modules import preprocess_input
 
-input = [input()]
-# input = preprocess(input)
+input = input()
+input = preprocess_input(input)
+print(input)
 
-print(pasien_input(input))
-print(penyakit_input(input))
-print(dokter_input(input))
+print('NAMA PASIEN', pasien_input(input))
+print('DIAGNOSIS', penyakit_input(input))
+print('NAMA DOKTER' ,dokter_input(input))
