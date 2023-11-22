@@ -1,7 +1,7 @@
 import mysql.connector
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from preprocessing import preprocess, vektorisasi
+from modules import preprocess, vektorisasi
 
 
 db = mysql.connector.connect(
