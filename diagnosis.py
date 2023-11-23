@@ -13,6 +13,7 @@ def diagnosis_data(input):
   df_vector = pd.concat([rekam_medis_df, cosi], axis=1) 
   # df_vector = df_vector.sort_values(by='cosine', ascending=False)
 
-  selected_names = df_vector.loc[df_vector['cosine'] > 0, 'diagnosis_nama']
+  # selected_names = df_vector.loc[df_vector['cosine'] > 0, 'diagnosis_nama']
+  # selected_names = df_vector[df_vector['cosine'] > 0]
 
-  return selected_names
+  return df_vector
