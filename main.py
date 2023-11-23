@@ -19,6 +19,7 @@ def index():
 
         rekam_medis = db.rekam_medis.copy()
         rekam_medis['cosine'] = (nama_pasien['cosine'] + diagnosis['cosine'] + nama_dokter['cosine']) / 3
+        rekam_medis = rekam_medis.sort_values(by='cosine', ascending=False)
 
         diagnosis_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'diagnosis_nama']
         pasien_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'pasien_nama']
