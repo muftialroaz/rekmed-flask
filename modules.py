@@ -90,8 +90,8 @@ def vektorisasi(data_text, input):
 
 
 # Table text cosine similarity
-cosine = []
 def cosine_sim(data, input):
+    cosine = []
     # Reshape the vectors to be 2D arrays
     for i in range(len(data)):
         vector1 = data.iloc[i:i+1]

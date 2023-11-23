@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Output</title>
+</head>
+<body>
+    <h1>Machine Learning Output</h1>
+    <form method="post" action="/">
+        <label for="input_data">Input Data:</label>
+        <input type="text" id="input_data" name="input_data" required>
+        <button type="submit">Submit</button>
+    </form>
+    <p><strong>Input:</strong> {{ input_data }}</p>
+    
+    <table border="1">
+        <tr>
+            <th>Nama Pasien</th>
+            <th>Diagnosis</th>
+            <th>Nama Dokter</th>
+        </tr>
+        <tr>
+            <td>{{ nama_pasien }}</td>
+            <td>{{ diagnosis }}</td>
+            <td>{{ nama_dokter }}</td>
+        </tr>
+    </table>
+</body>
+</html>

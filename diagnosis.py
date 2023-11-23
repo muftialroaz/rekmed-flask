@@ -3,16 +3,16 @@ from modules import preprocess, vektorisasi, cosine_sim
 import db
 
 rekam_medis_df = db.rekam_medis
-dokter_pre = preprocess(rekam_medis_df['dokter_nama'])
+diagnosis_pre = preprocess(rekam_medis_df['diagnosis_nama'])
 
-def dokter_data(input):
-  pasien_vec, input_vec = vektorisasi(dokter_pre, input)
+def diagnosis_data(input):
+  pasien_vec, input_vec = vektorisasi(diagnosis_pre, input)
   cosi = cosine_sim(pasien_vec, input_vec)
 
   # gabungkan dalam satu dataframe
   df_vector = pd.concat([rekam_medis_df, cosi], axis=1) 
   # df_vector = df_vector.sort_values(by='cosine', ascending=False)
 
-  selected_names = df_vector.loc[df_vector['cosine'] > 0, 'dokter_nama']
+  selected_names = df_vector.loc[df_vector['cosine'] > 0, 'diagnosis_nama']
 
   return selected_names
