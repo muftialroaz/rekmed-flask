@@ -20,12 +20,16 @@
             <th>Nama Pasien</th>
             <th>Diagnosis</th>
             <th>Nama Dokter</th>
+            <th>Cosine</th>
         </tr>
-        <tr>
-            <td>{{ nama_pasien }}</td>
-            <td>{{ diagnosis }}</td>
-            <td>{{ nama_dokter }}</td>
-        </tr>
+        {% for i in range(cosine|length) %}
+            <tr>
+                <td>{{ nama_pasien.iloc[i] }}</td>
+                <td>{{ diagnosis.iloc[i] }}</td>
+                <td>{{ nama_dokter.iloc[i] }}</td>
+                <td>{{ cosine.iloc[i] }}</td>
+            </tr>
+        {% endfor %}
     </table>
 </body>
 </html>

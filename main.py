@@ -18,16 +18,17 @@ def index():
         nama_dokter = dokter_data(preprocessed_input)
 
         rekam_medis = db.rekam_medis.copy()
-        rekam_medis['cosine'] = (nama_pasien['cosine'].fillna(0) + diagnosis['cosine'].fillna(0) + nama_dokter['cosine'].fillna(0)) / 3
+        rekam_medis['cosine'] = (nama_pasien['cosine'] + diagnosis['cosine'] + nama_dokter['cosine']) / 3
 
         diagnosis_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'diagnosis_nama']
         pasien_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'pasien_nama']
         dokter_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'dokter_nama']
+        cosine = rekam_medis.loc[rekam_medis['cosine'] > 0, 'cosine']
 
         # return render_template('index.html', input_data=input_data, nama_pasien=nama_pasien, diagnosis=diagnosis, nama_dokter=nama_dokter)
-        return render_template('index.html', input_data=input_data, nama_pasien=pasien_nama, diagnosis=diagnosis_nama, nama_dokter=dokter_nama)
+        return render_template('index.jinja', input_data=input_data, nama_pasien=pasien_nama, diagnosis=diagnosis_nama, nama_dokter=dokter_nama, cosine=cosine)
 
-    return render_template('form.html')  # Render form jika metodenya adalah GET
+    return render_template('form.jinja')  # Render form jika metodenya adalah GET
 
 if __name__ == "__main__":
     app.run()  # Gunakan manager untuk menjalankan aplikasi
