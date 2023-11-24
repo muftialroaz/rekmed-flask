@@ -24,10 +24,10 @@
         </tr>
         {% for i in range(cosine|length) %}
             <tr>
-                <td>{{ nama_pasien.iloc[i] }}</td>
-                <td>{{ diagnosis.iloc[i] }}</td>
-                <td>{{ nama_dokter.iloc[i] }}</td>
-                <td>{{ cosine.iloc[i] }}</td>
+                <td>{{ nama_pasien[i] }}</td>
+                <td>{{ diagnosis[i] }}</td>
+                <td>{{ nama_dokter[i] }}</td>
+                <td>{{ cosine[i] }}</td>
             </tr>
         {% endfor %}
     </table>
