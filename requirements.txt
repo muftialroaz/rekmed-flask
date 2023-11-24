@@ -8,6 +8,7 @@ exceptiongroup==1.2.0
 executing==2.0.1
 Flask==3.0.0
 Flask-Script==2.0.6
+Flask-WTF==1.2.1
 ipykernel==6.27.0
 ipython==8.17.2
 itsdangerous==2.1.2
@@ -49,3 +50,4 @@ traitlets==5.13.0
 tzdata==2023.3
 wcwidth==0.2.12
 Werkzeug==3.0.1
+WTForms==3.1.1
