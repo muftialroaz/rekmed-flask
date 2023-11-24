@@ -65,10 +65,10 @@ def index():
 
         json = rekam_medis.to_dict(orient='index')
 
-        diagnosis_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'diagnosis_nama'].tolist()
-        pasien_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'pasien_nama'].tolist()
-        dokter_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'dokter_nama'].tolist()
-        cosine = rekam_medis.loc[rekam_medis['cosine'] > 0, 'cosine'].tolist()
+        # diagnosis_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'diagnosis_nama'].tolist()
+        # pasien_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'pasien_nama'].tolist()
+        # dokter_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'dokter_nama'].tolist()
+        # cosine = rekam_medis.loc[rekam_medis['cosine'] > 0, 'cosine'].tolist()
 
         return jsonify(json)
 
