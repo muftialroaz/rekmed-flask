@@ -9,6 +9,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
+from rank_bm25 import BM25Okapi
+
 # Input preprocessing Function
 def preprocess_input(input):
     ## Data cleaning
@@ -104,3 +106,16 @@ def cosine_sim(data, input):
     # cosine_df = cosine_df.sort_values(by='cosine', ascending=False)
 
     return cosine_df
+
+def bm_25(doc, input):
+    # Pembentukan indeks BM25
+    tokenized_documents = [doc.split() for doc in doc]
+    bm25 = BM25Okapi(tokenized_documents)
+
+    # Hitung relevansi BM25
+    scores = bm25.get_scores(" ".join(input))
+
+    ranked = pd.DataFrame(scores)
+    ranked = ranked.rename(columns={0:'ranking'})
+
+    return ranked

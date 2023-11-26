@@ -1,5 +1,5 @@
 import pandas as pd
-from modules import preprocess, vektorisasi, cosine_sim
+from modules import preprocess, vektorisasi, cosine_sim, bm_25
 import db
 
 rekam_medis_df = db.rekam_medis
@@ -15,5 +15,12 @@ def diagnosis_data(input):
 
   # selected_names = df_vector.loc[df_vector['cosine'] > 0, 'diagnosis_nama']
   # selected_names = df_vector[df_vector['cosine'] > 0]
+
+  return df_vector
+
+def diagnosis_bm25(input):
+  df_vector = bm_25(diagnosis_pre, input)
+  # gabungkan dalam satu dataframe
+  df_vector = pd.concat([rekam_medis_df, df_vector['ranking']], axis=1) 
 
   return df_vector
