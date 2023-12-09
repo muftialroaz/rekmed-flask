@@ -36,7 +36,7 @@ def index():
         rekam_medis = pd.concat([rekam_medis, cosi], axis=1) 
         rekam_medis.sort_values(by='cosine', ascending=False)
 
-        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 0.5]
+        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 0.4]
 
         json = rekam_medis.to_dict(orient='index')
 
@@ -61,7 +61,7 @@ def index():
         rekam_medis = pd.concat([rekam_medis, cosi], axis=1) 
         rekam_medis.sort_values(by='cosine', ascending=False)
 
-        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 0.5]
+        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 0.4]
 
         json = rekam_medis.to_dict(orient='index')
 
