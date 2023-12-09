@@ -1,9 +1,7 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 from flask_wtf.csrf import CSRFProtect
-from pasien import pasien_data
-from diagnosis import diagnosis_data
-from dokter import dokter_data
-from modules import preprocess_input
+from modules import preprocess_input, preprocess, vektorisasi, cosine_sim
+import pandas as pd
 import db
 
 app = Flask(__name__)
@@ -25,25 +23,23 @@ def index():
         print(f"Search keyword from Yii (GET): {search_keyword_from_yii_get}")
 
         input_data = search_keyword_from_yii_get
-        preprocessed_input = preprocess_input(input_data)
-
-        nama_pasien = pasien_data(preprocessed_input)
-        diagnosis = diagnosis_data(preprocessed_input)
-        nama_dokter = dokter_data(preprocessed_input)
+        keyword = preprocess_input(input_data)
 
         rekam_medis = db.rekam_medis.copy()
-        rekam_medis['cosine'] = (nama_pasien['cosine'] + diagnosis['cosine'] + nama_dokter['cosine']) / 3
-        rekam_medis = rekam_medis.sort_values(by='cosine', ascending=False)
+        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['dokter_nama'] + ' ' + rekam_medis['diagnosis_nama']
+        doc_pre = preprocess(rekam_medis['combined_text'])
+
+        doc_vec, keyword_vec = vektorisasi(doc_pre, keyword)
+        cosi = cosine_sim(doc_vec, keyword_vec)
+
+        # gabungkan dalam satu dataframe
+        rekam_medis = pd.concat([rekam_medis, cosi], axis=1) 
+        rekam_medis.sort_values(by='cosine', ascending=False)
+
         rekam_medis = rekam_medis[rekam_medis['cosine'] > 0]
 
         json = rekam_medis.to_dict(orient='index')
 
-        # diagnosis_nama = rekam_medis['diagnosis_nama'].tolist()
-        # pasien_nama = rekam_medis['pasien_nama'].tolist()
-        # dokter_nama = rekam_medis['dokter_nama'].tolist()
-        # cosine = rekam_medis['cosine'].tolist()
-
-        # return render_template('index.jinja', input_data=input_data, nama_pasien=pasien_nama, diagnosis=diagnosis_nama, nama_dokter=dokter_nama, cosine=cosine)
         return jsonify(json)
 
     if request.method == 'POST':
@@ -52,23 +48,22 @@ def index():
         print(f"Search keyword from Yii (POST): {search_keyword_from_yii_post}")
 
         input_data = search_keyword_from_yii_post
-        preprocessed_input = preprocess_input(input_data)
-
-        nama_pasien = pasien_data(preprocessed_input)
-        diagnosis = diagnosis_data(preprocessed_input)
-        nama_dokter = dokter_data(preprocessed_input)
+        keyword = preprocess_input(input_data)
 
         rekam_medis = db.rekam_medis.copy()
-        rekam_medis['cosine'] = (nama_pasien['cosine'] + diagnosis['cosine'] + nama_dokter['cosine']) / 3
+        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['dokter_nama'] + ' ' + rekam_medis['diagnosis_nama']
+        doc_pre = preprocess(rekam_medis['combined_text'])
+
+        doc_vec, keyword_vec = vektorisasi(doc_pre, keyword)
+        cosi = cosine_sim(doc_vec, keyword_vec)
+
+        # gabungkan dalam satu dataframe
+        rekam_medis = pd.concat([rekam_medis, cosi], axis=1) 
+        rekam_medis.sort_values(by='cosine', ascending=False)
+
         rekam_medis = rekam_medis[rekam_medis['cosine'] > 0]
-        rekam_medis = rekam_medis.sort_values(by='cosine', ascending=False)
 
         json = rekam_medis.to_dict(orient='index')
-
-        # diagnosis_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'diagnosis_nama'].tolist()
-        # pasien_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'pasien_nama'].tolist()
-        # dokter_nama = rekam_medis.loc[rekam_medis['cosine'] > 0, 'dokter_nama'].tolist()
-        # cosine = rekam_medis.loc[rekam_medis['cosine'] > 0, 'cosine'].tolist()
 
         return jsonify(json)
 
