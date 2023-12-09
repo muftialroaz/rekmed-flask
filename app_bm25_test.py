@@ -24,7 +24,8 @@ def index():
         print(f"Search keyword from Yii (GET): {search_keyword_from_yii_get}")
 
         input_data = search_keyword_from_yii_get
-        query = preprocess_input(input_data)
+        query_list = preprocess_input(input_data)
+        query = ' '.join(query_list)
 
         rekam_medis = db.rekam_medis.copy()
         rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['diagnosis_nama'] + ' ' + rekam_medis['dokter_nama']
@@ -39,13 +40,13 @@ def index():
         scores = bm25.get_scores(query.split())
 
         ranked = pd.DataFrame(scores)
-        ranked = ranked.rename(columns={0:'ranking'})
+        ranked = ranked.rename(columns={0:'cosine'})
 
         # gabungkan dalam satu dataframe
         rekam_medis = pd.concat([rekam_medis, ranked], axis=1) 
-        rekam_medis.sort_values(by='ranked', ascending=False)
+        rekam_medis.sort_values(by='cosine', ascending=False)
 
-        rekam_medis = rekam_medis[rekam_medis['ranked'] >= 0.4]
+        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 5]
 
         json = rekam_medis.to_dict(orient='index')
 
@@ -56,8 +57,9 @@ def index():
         search_keyword_from_post = search_keyword_from_yii_post
         print(f"Search keyword from Yii (POST): {search_keyword_from_yii_post}")
 
-        input_data = search_keyword_from_yii_get
-        query = preprocess_input(input_data)
+        input_data = search_keyword_from_yii_post
+        query_list = preprocess_input(input_data)
+        query = ' '.join(query_list)
 
         rekam_medis = db.rekam_medis.copy()
         rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['diagnosis_nama'] + ' ' + rekam_medis['dokter_nama']
@@ -72,13 +74,13 @@ def index():
         scores = bm25.get_scores(query.split())
 
         ranked = pd.DataFrame(scores)
-        ranked = ranked.rename(columns={0:'ranking'})
+        ranked = ranked.rename(columns={0:'cosine'})
 
         # gabungkan dalam satu dataframe
         rekam_medis = pd.concat([rekam_medis, ranked], axis=1) 
-        rekam_medis.sort_values(by='ranked', ascending=False)
+        rekam_medis.sort_values(by='cosine', ascending=False)
 
-        rekam_medis = rekam_medis[rekam_medis['ranked'] >= 0.4]
+        rekam_medis = rekam_medis[rekam_medis['cosine'] >= 5]
 
         json = rekam_medis.to_dict(orient='index')
 
