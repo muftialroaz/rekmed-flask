@@ -5,11 +5,19 @@ This is search module for Rekmed-research by gamatutor.
 You can find these repository in this [link](https://github.com/Rifqi2000/rekmed-research)
 
 ### How to run
+1. Install virtual environment
 ```
 python -m venv .venv
-pip install -r requirements.txt
-flask --app app run  
 ```
+2. Set .venv as a python interpreter and install dependencies
+```
+pip install -r requirements.txt
+```
+3. Run app using the code
+```
+flask --app app run
+```
+
 
 ## Authors
 

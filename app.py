@@ -26,9 +26,9 @@ def index():
         keyword = preprocess_input(input_data)
 
         rekam_medis = db.rekam_medis.copy()
-        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['dokter_nama'] + ' ' + rekam_medis['diagnosis_nama']
+        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['diagnosis_nama'] + ' ' + rekam_medis['dokter_nama']
+        
         doc_pre = preprocess(rekam_medis['combined_text'])
-
         doc_vec, keyword_vec = vektorisasi(doc_pre, keyword)
         cosi = cosine_sim(doc_vec, keyword_vec)
 
@@ -51,9 +51,9 @@ def index():
         keyword = preprocess_input(input_data)
 
         rekam_medis = db.rekam_medis.copy()
-        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['dokter_nama'] + ' ' + rekam_medis['diagnosis_nama']
+        rekam_medis['combined_text'] = rekam_medis['pasien_nama'] + ' ' + rekam_medis['diagnosis_nama'] + ' ' + rekam_medis['dokter_nama']
+        
         doc_pre = preprocess(rekam_medis['combined_text'])
-
         doc_vec, keyword_vec = vektorisasi(doc_pre, keyword)
         cosi = cosine_sim(doc_vec, keyword_vec)
 
