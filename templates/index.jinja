@@ -20,14 +20,14 @@
             <th>Nama Pasien</th>
             <th>Diagnosis</th>
             <th>Nama Dokter</th>
-            <th>Ranking</th>
+            <th>Cosine</th>
         </tr>
-        {% for i in range(ranking|length) %}
+        {% for i in range(cosine|length) %}
             <tr>
                 <td>{{ nama_pasien[i] }}</td>
                 <td>{{ diagnosis[i] }}</td>
                 <td>{{ nama_dokter[i] }}</td>
-                <td>{{ ranking[i] }}</td>
+                <td>{{ cosine[i] }}</td>
             </tr>
         {% endfor %}
     </table>

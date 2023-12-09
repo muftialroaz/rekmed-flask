@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 stop_words = set(stopwords.words('indonesian'))  # Menggunakan kamus stop words Bahasa indonesia
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 # nltk.download('punkt')
+import re
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -48,6 +49,8 @@ def preprocess(data_text):
     ## Data cleaning
     # 1 Lowering case: Mengubah teks menjadi huruf kecil untuk konsistensi dalam analisis
     data_text_nama = data_text.str.lower()
+
+    data_text_nama = data_text_nama.apply(lambda x: re.sub('[^A-Za-z0-9.]+', ' ', x))
 
     # 2 Tokenisasi, memisahkan teks menjadi kata-kata atau frasa.
     data_text_nama_tokens = data_text_nama.apply(lambda x: word_tokenize(x))
